@@ -7,7 +7,7 @@ COPY frontend/ ./
 RUN npm run build
 
 # Build stage for backend
-FROM maven:3.6.3-openjdk-8-slim AS backend-build
+FROM maven:3.9-eclipse-temurin-17 AS backend-build
 WORKDIR /app/backend
 COPY backend/pom.xml ./
 COPY backend/.mvn ./.mvn
@@ -18,7 +18,7 @@ COPY backend/src ./src
 RUN ./mvnw clean package -DskipTests
 
 # Production stage
-FROM openjdk:8-jre-alpine
+FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
 # Install additional packages
