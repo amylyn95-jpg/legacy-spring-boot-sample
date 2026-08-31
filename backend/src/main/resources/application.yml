@@ -20,7 +20,9 @@ spring:
 ---
 # 開発環境（H2 Database）
 spring:
-  profiles: dev
+  config:
+    activate:
+      on-profile: dev
   datasource:
     url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     driver-class-name: org.h2.Driver
@@ -65,7 +67,9 @@ logging:
 ---
 # プレ本番環境（PostgreSQL）
 spring:
-  profiles: staging
+  config:
+    activate:
+      on-profile: staging
   datasource:
     url: jdbc:postgresql://localhost:5432/techbookstore
     driver-class-name: org.postgresql.Driver
@@ -84,7 +88,9 @@ app:
 ---
 # 本番環境（Azure）
 spring:
-  profiles: prod
+  config:
+    activate:
+      on-profile: prod
   datasource:
     url: jdbc:postgresql://${AZURE_POSTGRESQL_HOST}:5432/${AZURE_POSTGRESQL_DATABASE}?ssl=true&sslmode=require
     username: ${AZURE_POSTGRESQL_USERNAME}
