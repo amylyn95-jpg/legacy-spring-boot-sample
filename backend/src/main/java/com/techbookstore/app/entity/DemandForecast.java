@@ -1,6 +1,6 @@
 package com.techbookstore.app.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -25,7 +25,7 @@ public class DemandForecast {
     @Column(name = "algorithm", nullable = false, length = 50)
     private String algorithm = "SEASONAL";
 
-    @Column(name = "confidence", nullable = false, precision = 5, scale = 4)
+    @Column(name = "confidence", nullable = false)
     private Double confidence = 0.7500;
 
     @Column(name = "parameters", columnDefinition = "TEXT")

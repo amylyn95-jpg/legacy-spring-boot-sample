@@ -4,8 +4,10 @@ import com.techbookstore.app.service.TechTrendAnalysisService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.techbookstore.app.config.SecurityConfig;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -21,12 +23,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * 技術トレンドコントローラのテストクラス
  */
 @WebMvcTest(TechTrendController.class)
+@Import(SecurityConfig.class)
 public class TechTrendControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private TechTrendAnalysisService techTrendAnalysisService;
 
     @BeforeEach

@@ -45,11 +45,11 @@ WHERE NOT EXISTS (SELECT 1 FROM books);
 -- Book Authors (Only if books exist)
 INSERT INTO book_authors (book_id, author_id, author_type, display_order)
 SELECT * FROM (VALUES
-(1, 1, 'MAIN', 1),
-(2, 1, 'MAIN', 1),
-(3, 2, 'MAIN', 1),
-(4, 4, 'MAIN', 1),
-(5, 3, 'MAIN', 1)
+(1, 1, 'AUTHOR', 1),
+(2, 1, 'AUTHOR', 1),
+(3, 2, 'AUTHOR', 1),
+(4, 4, 'AUTHOR', 1),
+(5, 3, 'AUTHOR', 1)
 ) AS new_book_authors(book_id, author_id, author_type, display_order)
 WHERE EXISTS (SELECT 1 FROM books WHERE id = new_book_authors.book_id);
 
@@ -327,3 +327,19 @@ SELECT
     CURRENT_TIMESTAMP as created_at
 FROM tech_categories tc
 WHERE tc.category_code IN ('PYTHON', 'REACT', 'JAVA', 'JAVASCRIPT', 'SPRING', 'MYSQL');
+
+-- =================================================================
+-- IDENTITY SEQUENCE ALIGNMENT (H2 2.x)
+-- Explicit ID inserts above do not advance identity sequences on H2 2.x
+-- =================================================================
+ALTER TABLE publishers ALTER COLUMN id RESTART WITH 5;
+ALTER TABLE authors ALTER COLUMN id RESTART WITH 5;
+ALTER TABLE tech_categories ALTER COLUMN id RESTART WITH 11;
+ALTER TABLE books ALTER COLUMN id RESTART WITH 6;
+ALTER TABLE inventory ALTER COLUMN id RESTART WITH 6;
+ALTER TABLE customers ALTER COLUMN id RESTART WITH 4;
+ALTER TABLE orders ALTER COLUMN id RESTART WITH 5;
+ALTER TABLE order_items ALTER COLUMN id RESTART WITH 9;
+ALTER TABLE report_configs ALTER COLUMN id RESTART WITH 6;
+ALTER TABLE report_executions ALTER COLUMN id RESTART WITH 6;
+ALTER TABLE aggregation_cache ALTER COLUMN id RESTART WITH 5;
