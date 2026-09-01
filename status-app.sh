@@ -80,7 +80,7 @@ if [ -f "$BACKEND_PID_FILE" ]; then
         # Backend エンドポイント詳細
         echo "   🔗 エンドポイント:"
         echo "      ├─ API:          http://localhost:8080/api/v1"
-        echo "      ├─ Swagger UI:   http://localhost:8080/swagger-ui.html"
+        echo "      ├─ Swagger UI:   http://localhost:8080/swagger-ui/index.html"
         echo "      ├─ H2 Console:   http://localhost:8080/h2-console"
         echo "      └─ Health:       http://localhost:8080/actuator/health"
     else

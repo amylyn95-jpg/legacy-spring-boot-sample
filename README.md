@@ -91,7 +91,7 @@ npm start
 
 - Frontend: http://localhost:3000
 - Backend health: http://localhost:8080/actuator/health
-- Swagger UI (Springfox): http://localhost:8080/swagger-ui.html
+- Swagger UI (springdoc): http://localhost:8080/swagger-ui/index.html
 - H2 Console (dev profile): http://localhost:8080/h2-console
 
   - JDBC URL: `jdbc:h2:mem:testdb`
@@ -154,7 +154,7 @@ High-level API groups (all under `/api/v1`):
 - `/inventory`: inventory operations and analytics
 - `/reports`: dashboards and reporting endpoints
 
-API docs are exposed via Springfox (Swagger 2) at `/swagger-ui.html`.
+API docs are exposed via springdoc-openapi (OpenAPI 3) at `/swagger-ui/index.html`.
 
 ## Testing
 
