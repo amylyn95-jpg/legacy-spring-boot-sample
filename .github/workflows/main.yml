@@ -9,7 +9,7 @@ on:
 env:
   AZURE_WEBAPP_NAME: techbookstore
   JAVA_VERSION: '17'
-  NODE_VERSION: '12.x'
+  NODE_VERSION: '18.x'
 
 jobs:
   test:
