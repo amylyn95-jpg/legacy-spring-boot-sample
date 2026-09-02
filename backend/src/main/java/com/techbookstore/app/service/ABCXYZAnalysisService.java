@@ -93,14 +93,27 @@ public class ABCXYZAnalysisService {
             for (Book book : books) {
                 if (salesContributions.containsKey(book.getId())) {
                     try {
-                        ABCXYZAnalysis analysis = new ABCXYZAnalysis(
-                            book,
-                            abcClassifications.get(book.getId()),
-                            xyzClassifications.get(book.getId()),
-                            salesContributions.get(book.getId()),
-                            demandVariabilities.get(book.getId()),
-                            analysisDate
-                        );
+                        ABCXYZAnalysis analysis = abcxyzRepository
+                            .findByBookAndAnalysisDate(book, analysisDate)
+                            .orElse(null);
+
+                        if (analysis == null) {
+                            analysis = new ABCXYZAnalysis(
+                                book,
+                                abcClassifications.get(book.getId()),
+                                xyzClassifications.get(book.getId()),
+                                salesContributions.get(book.getId()),
+                                demandVariabilities.get(book.getId()),
+                                analysisDate
+                            );
+                        } else {
+                            analysis.updateClassification(
+                                abcClassifications.get(book.getId()),
+                                xyzClassifications.get(book.getId()),
+                                salesContributions.get(book.getId()),
+                                demandVariabilities.get(book.getId())
+                            );
+                        }
                         
                         results.add(abcxyzRepository.save(analysis));
                     } catch (Exception e) {

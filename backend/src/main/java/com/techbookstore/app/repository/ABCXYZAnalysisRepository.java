@@ -20,6 +20,11 @@ public interface ABCXYZAnalysisRepository extends JpaRepository<ABCXYZAnalysis, 
     Optional<ABCXYZAnalysis> findTopByBookOrderByAnalysisDateDesc(Book book);
 
     /**
+     * Find the analysis of a book for a specific date
+     */
+    Optional<ABCXYZAnalysis> findByBookAndAnalysisDate(Book book, LocalDate analysisDate);
+
+    /**
      * Find analysis by date range
      */
     @Query("SELECT a FROM ABCXYZAnalysis a WHERE a.analysisDate BETWEEN :startDate AND :endDate ORDER BY a.analysisDate DESC")

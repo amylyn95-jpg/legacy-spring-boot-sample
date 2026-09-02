@@ -62,6 +62,18 @@ public class ABCXYZAnalysis {
         }
     }
 
+    /**
+     * 同一日の再分析結果で分類を更新
+     */
+    public void updateClassification(String abcCategory, String xyzCategory,
+                                     BigDecimal salesContribution, BigDecimal demandVariability) {
+        this.abcCategory = abcCategory;
+        this.xyzCategory = xyzCategory;
+        this.salesContribution = salesContribution;
+        this.demandVariability = demandVariability;
+        this.recommendedStrategy = generateRecommendedStrategy(abcCategory, xyzCategory);
+    }
+
     private String generateRecommendedStrategy(String abc, String xyz) {
         String combination = abc + xyz;
         switch (combination) {
