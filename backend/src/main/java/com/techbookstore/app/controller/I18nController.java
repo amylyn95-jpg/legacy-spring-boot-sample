@@ -1,5 +1,6 @@
 package com.techbookstore.app.controller;
 
+import com.techbookstore.app.config.WebMvcConfig;
 import com.techbookstore.app.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Locale;
@@ -42,13 +44,13 @@ public class I18nController {
     }
     
     /**
-     * Resolve the locale for this request, preferring the locale established by the configured
-     * LocaleResolver / LocaleChangeInterceptor (cookie or {@code lang} parameter) and falling back
-     * to the Accept-Language header.
+     * Resolve the locale for this request. An explicit preference (the {@code lang} parameter or the
+     * language cookie) is resolved through the configured LocaleResolver /
+     * LocaleChangeInterceptor; otherwise the Accept-Language header decides.
      */
     private Locale resolveLocale(HttpServletRequest request) {
         LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
-        if (localeResolver != null) {
+        if (localeResolver != null && hasExplicitLocalePreference(request)) {
             return localeResolver.resolveLocale(request);
         }
         String acceptLanguage = request.getHeader("Accept-Language");
@@ -56,6 +58,21 @@ public class I18nController {
             return Locale.ENGLISH;
         }
         return Locale.JAPANESE;
+    }
+    
+    private boolean hasExplicitLocalePreference(HttpServletRequest request) {
+        if (request.getParameter(WebMvcConfig.LOCALE_PARAM_NAME) != null) {
+            return true;
+        }
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (WebMvcConfig.LOCALE_COOKIE_NAME.equals(cookie.getName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     
     private Map<String, String> buildMessages() {
