@@ -3,12 +3,19 @@ import axios from 'axios';
 
 const I18nContext = createContext();
 
+// Used when a component renders outside an I18nProvider: every t() call falls
+// back to the literal passed at the call site.
+const standaloneI18n = {
+  messages: {},
+  locale: 'ja',
+  loading: false,
+  t: (key, fallback = key) => fallback,
+  switchLanguage: () => Promise.resolve(),
+};
+
 export const useI18n = () => {
   const context = useContext(I18nContext);
-  if (!context) {
-    throw new Error('useI18n must be used within an I18nProvider');
-  }
-  return context;
+  return context || standaloneI18n;
 };
 
 export const I18nProvider = ({ children }) => {

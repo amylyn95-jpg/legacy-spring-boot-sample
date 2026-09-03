@@ -192,7 +192,7 @@ const InventoryReport = () => {
         // Use basic API
         response = await reports.getInventoryReport();
       }
-      setReportData(response.data);
+      setReportData(response);
       
       // Mock inventory analysis data for now
       setInventoryAnalysis({

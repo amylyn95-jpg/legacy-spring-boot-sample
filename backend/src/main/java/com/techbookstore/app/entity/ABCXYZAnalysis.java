@@ -1,6 +1,6 @@
 package com.techbookstore.app.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -60,6 +60,18 @@ public class ABCXYZAnalysis {
         if (recommendedStrategy == null) {
             recommendedStrategy = generateRecommendedStrategy(abcCategory, xyzCategory);
         }
+    }
+
+    /**
+     * 同一日の再分析結果で分類を更新
+     */
+    public void updateClassification(String abcCategory, String xyzCategory,
+                                     BigDecimal salesContribution, BigDecimal demandVariability) {
+        this.abcCategory = abcCategory;
+        this.xyzCategory = xyzCategory;
+        this.salesContribution = salesContribution;
+        this.demandVariability = demandVariability;
+        this.recommendedStrategy = generateRecommendedStrategy(abcCategory, xyzCategory);
     }
 
     private String generateRecommendedStrategy(String abc, String xyz) {

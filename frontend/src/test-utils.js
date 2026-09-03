@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import rootReducer from '../store/reducers';
+import rootReducer from './store/reducers';
 
 // Mock store for testing
 const mockStore = createStore(rootReducer, applyMiddleware(thunk));

@@ -2,8 +2,6 @@ server:
   port: 0  # Random port for tests
 
 spring:
-  profiles:
-    active: test
   datasource:
     url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     driver-class-name: org.h2.Driver
@@ -17,6 +15,7 @@ spring:
       ddl-auto: create-drop
     database-platform: org.hibernate.dialect.H2Dialect
     show-sql: false
+    defer-datasource-initialization: true
   security:
     user:
       name: test

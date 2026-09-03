@@ -6,8 +6,10 @@ import com.techbookstore.app.dto.ReportTemplateDto;
 import com.techbookstore.app.service.CustomReportService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.techbookstore.app.config.SecurityConfig;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -27,21 +29,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * レポート機能のテストクラス
  */
 @WebMvcTest(ReportController.class)
+@Import(SecurityConfig.class)
 public class ReportControllerPhase14Test {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private com.techbookstore.app.service.ReportService reportService;
 
-    @MockBean
+    @MockitoBean
     private com.techbookstore.app.service.AnalyticsService analyticsService;
 
-    @MockBean
+    @MockitoBean
     private CustomReportService customReportService;
 
-    @MockBean
+    @MockitoBean
     private com.techbookstore.app.service.BatchProcessingService batchProcessingService;
 
     @Autowired

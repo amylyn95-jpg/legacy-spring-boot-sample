@@ -20,7 +20,9 @@ spring:
 ---
 # 開発環境（H2 Database）
 spring:
-  profiles: dev
+  config:
+    activate:
+      on-profile: dev
   datasource:
     url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     driver-class-name: org.h2.Driver
@@ -41,17 +43,18 @@ spring:
       mode: always
       data-locations: classpath:data.sql
   # Redis設定（Dev Container環境）
-  redis:
-    host: ${REDIS_HOST:redis}
-    port: ${REDIS_PORT:6379}
-    database: 0
-    timeout: 2000ms
-    lettuce:
-      pool:
-        max-active: 10
-        max-idle: 10
-        min-idle: 1
-        max-wait: -1ms
+  data:
+    redis:
+      host: ${REDIS_HOST:redis}
+      port: ${REDIS_PORT:6379}
+      database: 0
+      timeout: 2000ms
+      lettuce:
+        pool:
+          max-active: 10
+          max-idle: 10
+          min-idle: 1
+          max-wait: -1ms
 
 app:
   cors:
@@ -65,7 +68,9 @@ logging:
 ---
 # プレ本番環境（PostgreSQL）
 spring:
-  profiles: staging
+  config:
+    activate:
+      on-profile: staging
   datasource:
     url: jdbc:postgresql://localhost:5432/techbookstore
     driver-class-name: org.postgresql.Driver
@@ -74,7 +79,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
     show-sql: false
 
 app:
@@ -84,7 +88,9 @@ app:
 ---
 # 本番環境（Azure）
 spring:
-  profiles: prod
+  config:
+    activate:
+      on-profile: prod
   datasource:
     url: jdbc:postgresql://${AZURE_POSTGRESQL_HOST}:5432/${AZURE_POSTGRESQL_DATABASE}?ssl=true&sslmode=require
     username: ${AZURE_POSTGRESQL_USERNAME}
@@ -92,13 +98,14 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
     show-sql: false
-  redis:
-    host: ${AZURE_REDIS_HOST}
-    port: 6380
-    password: ${AZURE_REDIS_KEY}
-    ssl: true
+  data:
+    redis:
+      host: ${AZURE_REDIS_HOST}
+      port: 6380
+      password: ${AZURE_REDIS_KEY}
+      ssl:
+        enabled: true
 
 app:
   cors:

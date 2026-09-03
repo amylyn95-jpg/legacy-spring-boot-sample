@@ -203,7 +203,7 @@ log_info "🎉 TechBookStore アプリケーションが正常に起動しまし
 log_info "=================================================================================="
 log_info "📖 Frontend (React):     http://localhost:3000"
 log_info "⚙️  Backend (Spring Boot): http://localhost:8080"
-log_info "📊 Swagger UI:          http://localhost:8080/swagger-ui.html"
+log_info "📊 Swagger UI:          http://localhost:8080/swagger-ui/index.html"
 log_info "🗄️  H2 Console:          http://localhost:8080/h2-console"
 log_info "   ├─ JDBC URL:         jdbc:h2:mem:testdb"
 log_info "   ├─ Username:         sa"

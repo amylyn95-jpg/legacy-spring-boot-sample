@@ -1,6 +1,6 @@
 package com.techbookstore.app.entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "book_authors")

@@ -46,7 +46,7 @@ describe('Inventory Dialogs', () => {
       </Provider>
     );
 
-    expect(screen.getByText('入荷処理')).toBeInTheDocument();
+    expect(screen.getByText('入荷登録')).toBeInTheDocument();
     expect(screen.getByText('テスト書籍')).toBeInTheDocument();
     expect(screen.getByText('9781234567890')).toBeInTheDocument();
     // Just check that the input exists by ID

@@ -5,8 +5,10 @@ import com.techbookstore.app.service.AnalyticsService;
 import com.techbookstore.app.service.ReportService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.techbookstore.app.config.SecurityConfig;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -19,21 +21,22 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest({ReportController.class, com.techbookstore.app.exception.GlobalExceptionHandler.class})
+@Import(SecurityConfig.class)
 public class AnalyticsControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
+    @MockitoBean
     private AnalyticsService analyticsService;
 
-    @MockBean 
+    @MockitoBean 
     private ReportService reportService;
 
-    @MockBean
+    @MockitoBean
     private com.techbookstore.app.service.CustomReportService customReportService;
 
-    @MockBean
+    @MockitoBean
     private com.techbookstore.app.service.BatchProcessingService batchProcessingService;
 
     @Test
