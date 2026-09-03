@@ -45,6 +45,7 @@ public class IntegratedAnalysisRequest {
         if (stockStatus != null) key.append("_stock:").append(stockStatus);
         if (priceRange != null) key.append("_price:").append(priceRange);
         if (publicationYear != null) key.append("_year:").append(publicationYear);
+        if (analysisTypes != null) key.append("_types:").append(String.join(",", analysisTypes));
         key.append("_horizon:").append(forecastHorizon);
         key.append("_opt:").append(includeOptimization);
         key.append("_date:").append(analysisDate.toString());
