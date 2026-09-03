@@ -66,7 +66,7 @@ public class TechTrendControllerTest {
 
     @Test
     void shouldGetTechTrendReport() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/tech-trends/report")
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/tech-trends/report")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -77,7 +77,7 @@ public class TechTrendControllerTest {
 
     @Test
     void shouldGetEmergingTechnologies() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/tech-trends/emerging")
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/tech-trends/emerging")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -88,7 +88,7 @@ public class TechTrendControllerTest {
 
     @Test
     void shouldGetTechnologyCorrelations() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/tech-trends/correlations")
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/tech-trends/correlations")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -99,7 +99,7 @@ public class TechTrendControllerTest {
 
     @Test
     void shouldGetHealthCheck() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/tech-trends/health")
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/tech-trends/health")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -112,7 +112,7 @@ public class TechTrendControllerTest {
         when(techTrendAnalysisService.analyzeTechCategoryTrends("NONEXISTENT"))
             .thenThrow(new IllegalArgumentException("Tech category not found: NONEXISTENT"));
         
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/tech-trends/categories/NONEXISTENT/analysis")
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/tech-trends/categories/NONEXISTENT/analysis")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }

@@ -4,6 +4,8 @@ import com.techbookstore.app.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -30,14 +32,33 @@ public class I18nController {
      */
     @GetMapping("/messages")
     public Map<String, String> getMessages(HttpServletRequest request) {
-        // Set locale based on Accept-Language header
-        String acceptLanguage = request.getHeader("Accept-Language");
-        Locale locale = Locale.JAPANESE; // default
-        if (acceptLanguage != null && acceptLanguage.startsWith("en")) {
-            locale = Locale.ENGLISH;
+        Locale previousLocale = LocaleContextHolder.getLocale();
+        try {
+            LocaleContextHolder.setLocale(resolveLocale(request));
+            return buildMessages();
+        } finally {
+            LocaleContextHolder.setLocale(previousLocale);
         }
-        LocaleContextHolder.setLocale(locale);
-        
+    }
+    
+    /**
+     * Resolve the locale for this request, preferring the locale established by the configured
+     * LocaleResolver / LocaleChangeInterceptor (cookie or {@code lang} parameter) and falling back
+     * to the Accept-Language header.
+     */
+    private Locale resolveLocale(HttpServletRequest request) {
+        LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+        if (localeResolver != null) {
+            return localeResolver.resolveLocale(request);
+        }
+        String acceptLanguage = request.getHeader("Accept-Language");
+        if (acceptLanguage != null && acceptLanguage.startsWith("en")) {
+            return Locale.ENGLISH;
+        }
+        return Locale.JAPANESE;
+    }
+    
+    private Map<String, String> buildMessages() {
         Map<String, String> messages = new HashMap<>();
         
         // Common labels
