@@ -57,6 +57,17 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
     
+    @ExceptionHandler(TechCategoryNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleTechCategoryNotFound(TechCategoryNotFoundException ex) {
+        logger.warn("Tech category not found: {}", ex.getMessage());
+        ErrorResponse error = new ErrorResponse(
+            "TECH_CATEGORY_NOT_FOUND",
+            ex.getMessage(),
+            LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+    
     @ExceptionHandler(InvalidOrderStatusException.class)
     public ResponseEntity<ErrorResponse> handleInvalidOrderStatus(InvalidOrderStatusException ex) {
         logger.warn("Invalid order status transition: {}", ex.getMessage());

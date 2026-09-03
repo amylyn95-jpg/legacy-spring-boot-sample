@@ -19,9 +19,12 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -33,6 +36,9 @@ import java.util.stream.Collectors;
 public class CustomerController {
     
     private static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
+    
+    private static final Set<String> ALLOWED_SORT_PROPERTIES = new HashSet<>(Arrays.asList(
+            "id", "name", "nameKana", "email", "phone", "customerType", "status", "createdAt", "updatedAt"));
     
     private final CustomerService customerService;
     
@@ -103,7 +109,12 @@ public class CustomerController {
         String[] sortParams = sort.split(",");
         Sort.Direction direction = sortParams.length > 1 && "desc".equalsIgnoreCase(sortParams[1]) 
                 ? Sort.Direction.DESC : Sort.Direction.ASC;
-        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortParams[0]));
+        String sortProperty = sortParams[0].trim();
+        if (!ALLOWED_SORT_PROPERTIES.contains(sortProperty)) {
+            throw new IllegalArgumentException("Invalid sort property: " + sortProperty 
+                    + ". Allowed values: " + ALLOWED_SORT_PROPERTIES);
+        }
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sortProperty));
         
         Page<Customer> customers;
         
@@ -113,8 +124,8 @@ public class CustomerController {
         } else if (customerType != null || status != null || startDate != null || endDate != null) {
             logger.debug("Filtering customers with type: {}, status: {}, startDate: {}, endDate: {}", 
                     customerType, status, startDate, endDate);
-            Customer.CustomerType typeFilter = customerType != null ? Customer.CustomerType.valueOf(customerType) : null;
-            Customer.CustomerStatus statusFilter = status != null ? Customer.CustomerStatus.valueOf(status) : null;
+            Customer.CustomerType typeFilter = parseCustomerType(customerType);
+            Customer.CustomerStatus statusFilter = parseCustomerStatus(status);
             customers = customerService.findCustomersWithFilters(typeFilter, statusFilter, startDate, endDate, pageable);
         } else {
             logger.debug("Fetching all customers with page: {}, size: {}", page, size);
@@ -123,6 +134,42 @@ public class CustomerController {
         
         Page<CustomerDto> customerDtos = customers.map(CustomerDto::new);
         return ResponseEntity.ok(customerDtos);
+    }
+    
+    /**
+     * Parses the customer type filter.
+     * 
+     * @param customerType the raw customer type value, may be null
+     * @return the parsed customer type, or null when no filter was supplied
+     */
+    private Customer.CustomerType parseCustomerType(String customerType) {
+        if (customerType == null) {
+            return null;
+        }
+        try {
+            return Customer.CustomerType.valueOf(customerType);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid customerType: " + customerType 
+                    + ". Allowed values: " + Arrays.toString(Customer.CustomerType.values()));
+        }
+    }
+    
+    /**
+     * Parses the customer status filter.
+     * 
+     * @param status the raw customer status value, may be null
+     * @return the parsed customer status, or null when no filter was supplied
+     */
+    private Customer.CustomerStatus parseCustomerStatus(String status) {
+        if (status == null) {
+            return null;
+        }
+        try {
+            return Customer.CustomerStatus.valueOf(status);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid status: " + status 
+                    + ". Allowed values: " + Arrays.toString(Customer.CustomerStatus.values()));
+        }
     }
     
     /**

@@ -1,6 +1,7 @@
 package com.techbookstore.app.controller;
 
 import com.techbookstore.app.dto.TechCategoryAnalysisDto;
+import com.techbookstore.app.exception.TechCategoryNotFoundException;
 import com.techbookstore.app.service.TechTrendAnalysisService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,8 +17,8 @@ import java.util.HashMap;
  * 技術トレンド分析のRESTコントローラ
  */
 @RestController
-@RequestMapping("/api/tech-trends")
-@CrossOrigin(origins = "*")
+@RequestMapping("/api/v1/tech-trends")
+@CrossOrigin(origins = "${app.cors.allowed-origins:http://localhost:3000}")
 public class TechTrendController {
 
     private static final Logger logger = LoggerFactory.getLogger(TechTrendController.class);
@@ -34,14 +35,9 @@ public class TechTrendController {
      */
     @GetMapping("/report")
     public ResponseEntity<Map<String, Object>> getTechTrendReport() {
-        try {
-            logger.info("Getting comprehensive tech trend report");
-            Map<String, Object> report = techTrendAnalysisService.generateTechTrendReport();
-            return ResponseEntity.ok(report);
-        } catch (Exception e) {
-            logger.error("Error generating tech trend report", e);
-            return ResponseEntity.status(500).build();
-        }
+        logger.info("Getting comprehensive tech trend report");
+        Map<String, Object> report = techTrendAnalysisService.generateTechTrendReport();
+        return ResponseEntity.ok(report);
     }
 
     /**
@@ -50,16 +46,12 @@ public class TechTrendController {
      */
     @GetMapping("/categories/{categoryCode}/analysis")
     public ResponseEntity<TechCategoryAnalysisDto> getCategoryAnalysis(@PathVariable String categoryCode) {
+        logger.info("Getting analysis for tech category: {}", categoryCode);
         try {
-            logger.info("Getting analysis for tech category: {}", categoryCode);
             TechCategoryAnalysisDto analysis = techTrendAnalysisService.analyzeTechCategoryTrends(categoryCode);
             return ResponseEntity.ok(analysis);
         } catch (IllegalArgumentException e) {
-            logger.warn("Tech category not found: {}", categoryCode);
-            return ResponseEntity.notFound().build();
-        } catch (Exception e) {
-            logger.error("Error analyzing tech category: " + categoryCode, e);
-            return ResponseEntity.status(500).build();
+            throw new TechCategoryNotFoundException(categoryCode);
         }
     }
 
@@ -69,14 +61,9 @@ public class TechTrendController {
      */
     @GetMapping("/emerging")
     public ResponseEntity<List<Map<String, Object>>> getEmergingTechnologies() {
-        try {
-            logger.info("Getting emerging technologies");
-            List<Map<String, Object>> emergingTech = techTrendAnalysisService.findEmergingTechnologies();
-            return ResponseEntity.ok(emergingTech);
-        } catch (Exception e) {
-            logger.error("Error finding emerging technologies", e);
-            return ResponseEntity.status(500).build();
-        }
+        logger.info("Getting emerging technologies");
+        List<Map<String, Object>> emergingTech = techTrendAnalysisService.findEmergingTechnologies();
+        return ResponseEntity.ok(emergingTech);
     }
 
     /**
@@ -86,14 +73,9 @@ public class TechTrendController {
     @GetMapping("/correlations")
     public ResponseEntity<Map<String, Object>> getTechnologyCorrelations(
             @RequestParam(value = "minCorrelation", defaultValue = "0.3") Double minCorrelation) {
-        try {
-            logger.info("Getting technology correlations with minimum correlation: {}", minCorrelation);
-            Map<String, Object> correlations = techTrendAnalysisService.generateTechnologyCorrelations();
-            return ResponseEntity.ok(correlations);
-        } catch (Exception e) {
-            logger.error("Error generating technology correlations", e);
-            return ResponseEntity.status(500).build();
-        }
+        logger.info("Getting technology correlations with minimum correlation: {}", minCorrelation);
+        Map<String, Object> correlations = techTrendAnalysisService.generateTechnologyCorrelations();
+        return ResponseEntity.ok(correlations);
     }
 
     /**
@@ -102,14 +84,9 @@ public class TechTrendController {
      */
     @GetMapping("/lifecycle-distribution")
     public ResponseEntity<Map<String, Object>> getLifecycleDistribution() {
-        try {
-            logger.info("Getting technology lifecycle distribution");
-            Map<String, Object> distribution = techTrendAnalysisService.generateLifecycleDistribution();
-            return ResponseEntity.ok(distribution);
-        } catch (Exception e) {
-            logger.error("Error generating lifecycle distribution", e);
-            return ResponseEntity.status(500).build();
-        }
+        logger.info("Getting technology lifecycle distribution");
+        Map<String, Object> distribution = techTrendAnalysisService.generateLifecycleDistribution();
+        return ResponseEntity.ok(distribution);
     }
 
     /**
@@ -119,20 +96,15 @@ public class TechTrendController {
     @GetMapping("/investment-recommendations")
     public ResponseEntity<List<Map<String, Object>>> getInvestmentRecommendations(
             @RequestParam(value = "limit", defaultValue = "10") Integer limit) {
-        try {
-            logger.info("Getting investment recommendations with limit: {}", limit);
-            List<Map<String, Object>> recommendations = techTrendAnalysisService.generateInvestmentRecommendations();
-            
-            // Apply limit if specified
-            if (limit != null && limit > 0 && recommendations.size() > limit) {
-                recommendations = recommendations.subList(0, limit);
-            }
-            
-            return ResponseEntity.ok(recommendations);
-        } catch (Exception e) {
-            logger.error("Error generating investment recommendations", e);
-            return ResponseEntity.status(500).build();
+        logger.info("Getting investment recommendations with limit: {}", limit);
+        List<Map<String, Object>> recommendations = techTrendAnalysisService.generateInvestmentRecommendations();
+        
+        // Apply limit if specified
+        if (limit != null && limit > 0 && recommendations.size() > limit) {
+            recommendations = recommendations.subList(0, limit);
         }
+        
+        return ResponseEntity.ok(recommendations);
     }
 
     /**

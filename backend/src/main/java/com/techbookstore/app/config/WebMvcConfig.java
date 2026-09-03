@@ -18,11 +18,15 @@ import java.util.Locale;
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
     
+    public static final String LOCALE_COOKIE_NAME = "language";
+    
+    public static final String LOCALE_PARAM_NAME = "lang";
+    
     @Bean
     public LocaleResolver localeResolver() {
         CookieLocaleResolver resolver = new CookieLocaleResolver();
         resolver.setDefaultLocale(Locale.JAPANESE);
-        resolver.setCookieName("language");
+        resolver.setCookieName(LOCALE_COOKIE_NAME);
         resolver.setCookieMaxAge(3600 * 24 * 30); // 30 days
         return resolver;
     }
@@ -30,7 +34,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
         LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
-        interceptor.setParamName("lang");
+        interceptor.setParamName(LOCALE_PARAM_NAME);
         return interceptor;
     }
     

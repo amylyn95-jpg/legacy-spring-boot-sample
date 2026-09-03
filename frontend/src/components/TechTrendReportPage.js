@@ -111,7 +111,7 @@ const TechTrendReportPage = () => {
 
   const loadTrendReport = async () => {
     try {
-      const response = await fetch('/api/tech-trends/report');
+      const response = await fetch('/api/v1/tech-trends/report');
       if (response.ok) {
         const data = await response.json();
         setTrendReport(data);
@@ -125,7 +125,7 @@ const TechTrendReportPage = () => {
 
   const loadCategoryAnalysis = async (categoryCode) => {
     try {
-      const response = await fetch(`/api/tech-trends/categories/${categoryCode}/analysis`);
+      const response = await fetch(`/api/v1/tech-trends/categories/${categoryCode}/analysis`);
       if (response.ok) {
         const data = await response.json();
         setCategoryAnalysis(data);
@@ -139,7 +139,7 @@ const TechTrendReportPage = () => {
 
   const loadEmergingTechnologies = async () => {
     try {
-      const response = await fetch('/api/tech-trends/emerging');
+      const response = await fetch('/api/v1/tech-trends/emerging');
       if (response.ok) {
         const data = await response.json();
         setEmergingTech(data);
@@ -151,7 +151,7 @@ const TechTrendReportPage = () => {
 
   const loadCorrelations = async () => {
     try {
-      const response = await fetch('/api/tech-trends/correlations');
+      const response = await fetch('/api/v1/tech-trends/correlations');
       if (response.ok) {
         const data = await response.json();
         setCorrelations(data);
@@ -163,7 +163,7 @@ const TechTrendReportPage = () => {
 
   const loadLifecycleDistribution = async () => {
     try {
-      const response = await fetch('/api/tech-trends/lifecycle-distribution');
+      const response = await fetch('/api/v1/tech-trends/lifecycle-distribution');
       if (response.ok) {
         const data = await response.json();
         setLifecycleDistribution(data);
@@ -177,7 +177,7 @@ const TechTrendReportPage = () => {
 
   const loadInvestmentRecommendations = async () => {
     try {
-      const response = await fetch('/api/tech-trends/investment-recommendations');
+      const response = await fetch('/api/v1/tech-trends/investment-recommendations');
       if (response.ok) {
         const data = await response.json();
         setInvestmentRecommendations(data);
